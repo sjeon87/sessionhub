@@ -362,7 +362,7 @@ def _run_elevated_ps(inner_command: str) -> tuple[int, str]:
         text=True,
     )
     err = (r.stderr or "").strip()
-    if r.returncode === 1223 and not err:
+    if r.returncode == 1223 and not err:
         err = "UAC was rejected"
     return r.returncode, err
 
