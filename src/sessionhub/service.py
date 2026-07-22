@@ -359,7 +359,7 @@ def _run_elevated_ps(inner_command: str) -> tuple[int, str]:
     r = subprocess.run(
         ["powershell", "-NoProfile", "-NonInteractive", "-Command", outer_command],
         capture_output=True,
-        text=True
+        text=True,
     )
     err = (r.stderr or "").strip()
     if r.returncode === 1223 and not err:
@@ -374,7 +374,7 @@ def _install_win(cfg: Config) -> dict:
 
     stale = "".join(
         f"schtasks /Delete /TN {n} /F 2>$null; "
-        for n in (WIN_TASK_NAME, *LEGACYU_WIN_TASK_NAMES)
+        for n in (WIN_TASK_NAME, *LEGACY_WIN_TASK_NAMES)
     )
     command = (
         f"{stale}"
@@ -402,7 +402,7 @@ def _uninstall_win(cfg: Config) -> dict:
             "".join(f"schtasks /Delete /TN {n} /F; " for n in existing)
             + "exit $LASTEXITCODE"
         )
-        rc, err = _run_elevated_ps(inner)
+        rc, err = _run_elevated_ps(command)
         if rc != 0:
             raise RuntimeError(f"schtasks /Delete failed (rc={rc}): {err}")
     xml = _win_xml_path()
