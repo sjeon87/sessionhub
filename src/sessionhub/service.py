@@ -405,6 +405,7 @@ def _uninstall_win(cfg: Config) -> dict:
         rc, err = _run_elevated_ps(command)
         if rc != 0:
             raise RuntimeError(f"schtasks /Delete failed (rc={rc}): {err}")
+
     xml = _win_xml_path()
     if xml.exists():
         try:
